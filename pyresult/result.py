@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=too-few-public-methods
 '''Result pattern implementation'''
 
-import six
 
+OK = 'Ok'
+ERROR = 'Error'
+
+STATUS_IDX = 0
+VALUE_IDX = 1
 
 
 class ResultError(Exception):
@@ -13,20 +16,19 @@ class ResultError(Exception):
 
 def ok(val):  # pylint: disable=invalid-name
     '''Create Ok result'''
-    return ('Ok', val)
+    return (OK, val)
 
 
 def error(msg):
     '''Create error result'''
-    return ('Error', msg)
-
+    return (ERROR, msg)
 
 
 def result(res):
     '''Check value is result'''
     if not isinstance(res, tuple) or len(res) != 2:
         raise ResultError(u'Error: Value \'{0}\' isn\'t 2-tuple.'.format(res))
-    if res[0] != 'Ok' and res[0] != 'Error':
+    if res[STATUS_IDX] != OK and res[STATUS_IDX] != ERROR:
         raise ResultError(
             u'Error: Value \'{0}\' isn\'t \'Ok\' or \'Error\'.'.format(res)
         )
@@ -35,18 +37,16 @@ def result(res):
 
 def is_ok(res):
     '''Check result is Ok'''
-    return True if result(res)[0] == 'Ok' else False
+    return result(res)[STATUS_IDX] == OK
 
 
 def is_error(res):
     '''Check result is Error'''
-    return True if result(res)[0] == 'Error' else False
+    return result(res)[STATUS_IDX] == ERROR
 
 
 def value(res):
     '''Return stored value in Result'''
     if is_error(res):
-        raise ResultError(res[1])
-    return res[1]
-
-
+        raise ResultError(res[VALUE_IDX])
+    return res[VALUE_IDX]
