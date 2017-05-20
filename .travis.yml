@@ -22,7 +22,6 @@ deploy:
     repo: iodevs/pyresult
     tags: true
 env:
-- TOXENV=py36
 - TOXENV=py35
 - TOXENV=py34
 - TOXENV=py27
