@@ -12,7 +12,8 @@ def errmap(func, res):
 
     errmap: (x -> y) -> Result a x -> Result a y
     '''
-    return error(func(res.message)) if is_error(res) else res
+    # return error(func(res.message)) if is_error(res) else res
+    return error(func(res[1])) if is_error(res) else res
 
 
 @curry
@@ -21,27 +22,7 @@ def rmap(func, res):
 
     rmap: (a -> value) -> Result a -> Result value
     '''
-    return ok(func(res.val)) if is_ok(res) else res
-
-
-@curry
-def rmapn(func, results):
-    '''Map `func` to `results`
-
-    rmapn: (*args -> value) -> List Result a -> Result value
-    '''
-    args = []
-    errors = []
-    for res in results:
-        if is_ok(res):
-            args.append(value(res))
-        else:
-            errors.append(res.message)
-
-    if errors:
-        return error(u'\n'.join(errors))
-
-    return ok(func(*args))
+    return ok(func(res[1])) if is_ok(res) else res
 
 
 @curry
@@ -50,7 +31,7 @@ def and_then(func, res):
 
     and_then: (a -> Result b x) -> Result a x -> Result b x
     '''
-    return func(res.val) if is_ok(res) else res
+    return func(res[1]) if is_ok(res) else res
 
 
 @curry
@@ -59,7 +40,7 @@ def and_else(func, res):
 
     and_else: (x -> Result b x) -> Result a x -> Result a x
     '''
-    return func(res.message) if is_error(res) else res
+    return func(res[1]) if is_error(res) else res
 
 
 def resolve(res):
@@ -67,4 +48,4 @@ def resolve(res):
 
     resolve: Result (Result a x) x -> Result a x
     '''
-    return res if is_error(res) else result(res.val)
+    return res if is_error(res) else result(res[1])
