@@ -3,7 +3,7 @@
 
 import pytest
 
-from pyresult.result import ResultError, ok, error, result, is_ok, is_error, value
+from pyresult.result import ok, error
 from pyresult.operators import errmap, rmap, and_then, and_else, resolve
 
 
