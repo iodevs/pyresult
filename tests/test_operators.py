@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import pytest
+# pylint: disable=missing-docstring, invalid-name
 
 from pyresult.result import OK, ERROR, ok, error
 from pyresult.operators import (
@@ -14,8 +13,8 @@ from pyresult.operators import (
 
 
 def test_errmap_is_ok():
-
     val = (ERROR, 'msg')
+
     def f(q):
         return q + " hello"
 
@@ -23,8 +22,8 @@ def test_errmap_is_ok():
 
 
 def test_errmap_original_res():
-
     val = (OK, 'val')
+
     def f(val):
         return val
 
@@ -32,8 +31,8 @@ def test_errmap_original_res():
 
 
 def test_rmap_is_ok():
-
     val = (OK, 'val')
+
     def f(val):
         return val
 
@@ -41,8 +40,8 @@ def test_rmap_is_ok():
 
 
 def test_rmap_original_res():
-
     val = (ERROR, 'msg')
+
     def f(val):
         return val
 
@@ -60,8 +59,8 @@ def test_and_then_is_ok():
 
 
 def test_and_then_original_res():
-
     val = (ERROR, 'msg')
+
     def f(a):
         return a + 1
 
@@ -79,8 +78,8 @@ def test_and_else_is_ok():
 
 
 def test_and_else_original_res():
-
     val = (OK, 'val')
+
     def f(val):
         return val
 
