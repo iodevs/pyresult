@@ -11,45 +11,51 @@ Tests for `pyresult` module.
 
 import pytest
 
-from pyresult.result import ResultError, ok, error, result, is_ok, is_error, value
+from pyresult.result import OK, ERROR, ResultError
+from pyresult import (
+    ok,
+    error,
+    result,
+    is_ok,
+    is_error,
+    value
+)
 
 
 def test_ok_returns_tuple():
-
     text = 'Hello World'
 
     rv = ok(text)
 
-    assert rv == ('Ok', text)
+    assert rv == (OK, text)
 
 
 def test_error_returns_tuple():
-
     msg = 'Error msg here!'
 
     rv = error(msg)
 
-    assert rv == ('Error', msg)
+    assert rv == (ERROR, msg)
 
 
 def test_result_ok_tuple():
     with pytest.raises(ResultError):
-        result(['Ok', 'Hello World'])
+        result([OK, 'Hello World'])
 
 
 def test_result_ok_2tuple():
     with pytest.raises(ResultError):
-        result(('Ok'))
+        result((OK))
 
 
 def test_result_error_tuple():
     with pytest.raises(ResultError):
-        result(['Error', 'Hello World'])
+        result([ERROR, 'Hello World'])
 
 
 def test_result_error_2tuple():
     with pytest.raises(ResultError):
-        result(('Error'))
+        result((ERROR))
 
 
 def test_result_isnt_ok_either_error():
@@ -59,39 +65,39 @@ def test_result_isnt_ok_either_error():
 
 def test_is_ok_true():
 
-    rv = ('Ok', 'value')
+    rv = (OK, 'value')
 
     assert is_ok(rv) is True
 
 
 def test_is_ok_false():
 
-    rv = ('Error', 'value')
+    rv = (ERROR, 'value')
 
     assert is_ok(rv) is False
 
 
 def test_is_error_true():
 
-    rv = ('Error', 'msg')
+    rv = (ERROR, 'msg')
 
     assert is_error(rv) is True
 
 
 def test_is_error_false():
 
-    rv = ('Ok', 'msg')
+    rv = (OK, 'msg')
 
     assert is_error(rv) is False
 
 
 def test_value_return_ok_val():
 
-    rv = ('Ok', 'val')
+    rv = (OK, 'val')
 
     assert value(rv) == 'val'
 
 
 def test_value_return_error_val():
     with pytest.raises(ResultError):
-        value(('Error', 'msg'))
+        value((ERROR, 'msg'))
