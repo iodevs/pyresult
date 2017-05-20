@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# pylint: disable=missing-docstring
 
 """
 test_pyresult
@@ -9,7 +10,6 @@ Tests for `pyresult` module.
 """
 
 import pytest
-
 
 from pyresult.result import ResultError, ok, error, result, is_ok, is_error, value
 
@@ -61,28 +61,28 @@ def test_is_ok_true():
 
     rv = ('Ok', 'value')
 
-    assert is_ok(rv) == True
+    assert is_ok(rv) is True
 
 
 def test_is_ok_false():
 
     rv = ('Error', 'value')
 
-    assert is_ok(rv) == False
+    assert is_ok(rv) is False
 
 
 def test_is_error_true():
 
     rv = ('Error', 'msg')
 
-    assert is_error(rv) == True
+    assert is_error(rv) is True
 
 
 def test_is_error_false():
 
     rv = ('Ok', 'msg')
 
-    assert is_error(rv) == False
+    assert is_error(rv) is False
 
 
 def test_value_return_ok_val():
@@ -95,5 +95,3 @@ def test_value_return_ok_val():
 def test_value_return_error_val():
     with pytest.raises(ResultError):
         value(('Error', 'msg'))
-
-        
