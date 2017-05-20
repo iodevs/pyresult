@@ -25,7 +25,7 @@ env:
 - TOXENV=py35
 - TOXENV=py34
 - TOXENV=py27
-install: pip install -U tox
+install: pip install -U tox coveralls
 language: python
 python: 3.5
 script: tox -e ${TOXENV}
