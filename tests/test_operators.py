@@ -3,22 +3,28 @@
 
 import pytest
 
-from pyresult.result import ok, error
-from pyresult.operators import errmap, rmap, and_then, and_else, resolve
+from pyresult.result import OK, ERROR, ok, error
+from pyresult.operators import (
+    errmap,
+    rmap,
+    and_then,
+    and_else,
+    resolve
+)
 
 
 def test_errmap_is_ok():
 
-    val = ('Error', 'msg')
+    val = (ERROR, 'msg')
     def f(q):
         return q + " hello"
 
-    assert errmap(f, val) == ('Error', 'msg hello')
+    assert errmap(f, val) == (ERROR, 'msg hello')
 
 
 def test_errmap_original_res():
 
-    val = ('Ok', 'val')
+    val = (OK, 'val')
     def f(val):
         return val
 
@@ -27,7 +33,7 @@ def test_errmap_original_res():
 
 def test_rmap_is_ok():
 
-    val = ('Ok', 'val')
+    val = (OK, 'val')
     def f(val):
         return val
 
@@ -36,7 +42,7 @@ def test_rmap_is_ok():
 
 def test_rmap_original_res():
 
-    val = ('Error', 'msg')
+    val = (ERROR, 'msg')
     def f(val):
         return val
 
@@ -48,14 +54,14 @@ def test_and_then_is_ok():
     val = 1
 
     def f(a):
-        return ('Ok', a + 1)
+        return (OK, a + 1)
 
-    assert and_then(f, ok(val)) == ('Ok', val + 1)
+    assert and_then(f, ok(val)) == (OK, val + 1)
 
 
 def test_and_then_original_res():
 
-    val = ('Error', 'msg')
+    val = (ERROR, 'msg')
     def f(a):
         return a + 1
 
@@ -67,14 +73,14 @@ def test_and_else_is_ok():
     val = 1
 
     def f(a):
-        return ('Error', a + 1)
+        return (ERROR, a + 1)
 
-    assert and_else(f, error(val)) == ('Error', val + 1)
+    assert and_else(f, error(val)) == (ERROR, val + 1)
 
 
 def test_and_else_original_res():
 
-    val = ('Ok', 'val')
+    val = (OK, 'val')
     def f(val):
         return val
 
@@ -83,13 +89,13 @@ def test_and_else_original_res():
 
 def test_resolve_original_res():
 
-    val = ('Error', ('Error', 'msg'))
+    val = (ERROR, (ERROR, 'msg'))
 
     assert resolve(val) == val
 
 
 def test_resolve_isnt_ok():
 
-    val = ('Ok', ('Ok', 'val'))
+    val = (OK, (OK, 'val'))
 
-    assert resolve(val) == ('Ok', 'val')
+    assert resolve(val) == (OK, 'val')
