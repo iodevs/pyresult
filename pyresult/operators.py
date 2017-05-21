@@ -4,7 +4,6 @@
 from toolz import curry
 
 from pyresult.result import (
-    VALUE_IDX,
     ok,
     error,
     result,
@@ -19,7 +18,8 @@ def errmap(func, res):
 
     errmap: (x -> y) -> Result a x -> Result a y
     '''
-    return error(func(res[VALUE_IDX])) if is_error(res) else res
+    res = result(res)
+    return error(func(res.value)) if is_error(res) else res
 
 
 @curry
@@ -28,7 +28,8 @@ def rmap(func, res):
 
     rmap: (a -> value) -> Result a -> Result value
     '''
-    return ok(func(res[VALUE_IDX])) if is_ok(res) else res
+    res = result(res)
+    return ok(func(res.value)) if is_ok(res) else res
 
 
 @curry
@@ -37,7 +38,8 @@ def and_then(func, res):
 
     and_then: (a -> Result b x) -> Result a x -> Result b x
     '''
-    return result(func(res[VALUE_IDX])) if is_ok(res) else res
+    res = result(res)
+    return result(func(res.value)) if is_ok(res) else res
 
 
 @curry
@@ -46,7 +48,8 @@ def and_else(func, res):
 
     and_else: (x -> Result b x) -> Result a x -> Result a x
     '''
-    return result(func(res[VALUE_IDX])) if is_error(res) else res
+    res = result(res)
+    return result(func(res.value)) if is_error(res) else res
 
 
 @curry
@@ -61,10 +64,11 @@ def fold(res):
     err = [None]*len_res
 
     for i, e in enumerate(res):
+        e = result(e)
         if is_ok(e):
-            val[i] = e[VALUE_IDX]
+            val[i] = e.value
         else:
-            err[i] = e[VALUE_IDX]
+            err[i] = e.value
 
     if None in val:
         return error(err)
@@ -77,4 +81,5 @@ def resolve(res):
 
     resolve: Result (Result a x) x -> Result a x
     '''
-    return res if is_error(res) else result(res[VALUE_IDX])
+    res = result(res)
+    return res if is_error(res) else result(res.value)
