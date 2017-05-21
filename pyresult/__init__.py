@@ -9,6 +9,13 @@ from pyresult.result import (  # noqa
     is_error,
     value
 )
+from pyresult.operators import (  # noqa
+    errmap,
+    rmap,
+    and_then,
+    and_else,
+    resolve,
+)
 
 __author__ = """Jindrich Kralevic Smitka"""
 __email__ = 'smitka.j@gmail.com'
