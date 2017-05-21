@@ -45,7 +45,7 @@ def test_result_ok_tuple():
 
 def test_result_ok_2tuple():
     with pytest.raises(ResultError):
-        result((OK))
+        result((OK,))
 
 
 def test_result_error_tuple():
@@ -55,7 +55,7 @@ def test_result_error_tuple():
 
 def test_result_error_2tuple():
     with pytest.raises(ResultError):
-        result((ERROR))
+        result((ERROR,))
 
 
 def test_result_isnt_ok_either_error():

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 '''Result pattern implementation'''
 
+import collections
 
 OK = 'Ok'
 ERROR = 'Error'
 
-STATUS_IDX = 0
-VALUE_IDX = 1
+Result = collections.namedtuple('Result', ('status', 'value'))
 
 
 class ResultError(Exception):
@@ -16,37 +16,39 @@ class ResultError(Exception):
 
 def ok(val):  # pylint: disable=invalid-name
     '''Create Ok result'''
-    return (OK, val)
+    return Result(OK, val)
 
 
 def error(msg):
     '''Create error result'''
-    return (ERROR, msg)
+    return Result(ERROR, msg)
 
 
 def result(res):
     '''Check value is result'''
     if not isinstance(res, tuple) or len(res) != 2:
-        raise ResultError(u'Error: Value \'{0}\' isn\'t 2-tuple.'.format(res))
-    if res[STATUS_IDX] != OK and res[STATUS_IDX] != ERROR:
+        raise ResultError(u'Error: Value \'{0!r}\' isn\'t 2-tuple.'.format(res))
+    res = Result(*res)
+    if res.status != OK and res.status != ERROR:
         raise ResultError(
-            u'Error: Value \'{0}\' isn\'t \'Ok\' or \'Error\'.'.format(res)
+            u'Error: Value \'{0!r}\' isn\'t \'Ok\' or \'Error\'.'.format(res)
         )
     return res
 
 
 def is_ok(res):
     '''Check result is Ok'''
-    return result(res)[STATUS_IDX] == OK
+    return result(res).status == OK
 
 
 def is_error(res):
     '''Check result is Error'''
-    return result(res)[STATUS_IDX] == ERROR
+    return result(res).status == ERROR
 
 
 def value(res):
     '''Return stored value in Result'''
+    res = result(res)
     if is_error(res):
-        raise ResultError(res[VALUE_IDX])
-    return res[VALUE_IDX]
+        raise ResultError(res.value)
+    return res.value
