@@ -9,6 +9,7 @@ from pyresult.operators import (
     rmap,
     and_then,
     and_else,
+    fold,
     resolve
 )
 
@@ -85,6 +86,20 @@ def test_and_else_original_res():
         return val
 
     assert and_else(f, val) == val
+
+
+def test_fold_all_is_ok():
+
+    res = [('Ok', 'val1'), ('Ok', 'val2'), ('Ok', 'val3')]
+
+    assert fold(res) == ('Ok', ['val1', 'val2', 'val3'])
+
+
+def test_fold_not_all_is_ok():
+
+    res = [('Ok', 'val1'), ('Error', 'msg1'), ('Ok', 'val3')]
+
+    assert fold(res) == ('Error', [None, 'msg1', None])
 
 
 def test_resolve_original_res():

@@ -52,6 +52,29 @@ def and_else(func, res):
     return result(func(res[VALUE_IDX])) if is_error(res) else res
 
 
+@curry
+def fold(res):
+    ''' List results is decomposited into list of results values
+    and list of result errors.
+
+    fold: (List Result a x) -> Result (List a) (List x)
+    '''
+    len_res = len(res)
+    val = [None]*len_res
+    err = [None]*len_res
+
+    for i, e in enumerate(res):
+        if is_ok(e):
+            val[i] = e[VALUE_IDX]
+        else:
+            err[i] = e[VALUE_IDX]
+
+    if None in val:
+        return error(err)
+    else:
+        return ok(val)
+
+
 def resolve(res):
     '''Flatten nested results
 
