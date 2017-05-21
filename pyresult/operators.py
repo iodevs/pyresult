@@ -4,17 +4,14 @@
 from toolz import curry
 
 from pyresult.result import (
-    OK,
-    ERROR,
     VALUE_IDX,
-    STATUS_IDX,
     ok,
     error,
     result,
     is_ok,
     is_error,
-    value
 )
+
 
 @curry
 def errmap(func, res):
