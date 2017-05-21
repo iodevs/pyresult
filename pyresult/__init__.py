@@ -11,6 +11,7 @@ from pyresult.result import (  # noqa
 )
 from pyresult.operators import (  # noqa
     errmap,
+    fold,
     rmap,
     and_then,
     and_else,
