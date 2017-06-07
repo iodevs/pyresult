@@ -27,7 +27,7 @@ test_requirements = [
 
 setup(
     name='pyresult',
-    version='0.5.0',
+    version='0.5.1',
     description="A Result pattern for python",
     long_description=readme + '\n\n' + history,
     author="Jindrich Kralevic Smitka",
