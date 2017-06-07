@@ -9,7 +9,8 @@ from pyresult.operators import (
     and_then,
     and_else,
     fold,
-    resolve
+    resolve,
+    do
 )
 
 
@@ -113,3 +114,21 @@ def test_resolve_isnt_ok():
     val = (OK, (OK, 'val'))
 
     assert resolve(val) == (OK, 'val')
+
+
+def test_do_return_original_error():
+    err = error('ERROR')
+
+    assert do(ok, err) == err
+
+
+def test_do_return_original_result():
+    result = ok('FOO BAR')
+
+    assert do(lambda _: ok('BAZ FOO'), result) == result
+
+
+def test_do_return_error_from_function():
+    err = error('BAZ FOO')
+
+    assert do(lambda _: err, ok('FOO BAR')) == err

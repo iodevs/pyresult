@@ -83,3 +83,15 @@ def resolve(res):
     '''
     res = result(res)
     return res if is_error(res) else result(res.value)
+
+
+def do(func, res):  # pylint: disable=invalid-name
+    '''Run `func` when result `res` is ok
+    and then return `res` if function return ok result,
+    otherwise return its error result.
+
+    do: (val -> Result x e) -> Result val e -> Result val e
+    '''
+    res = result(res)
+
+    return and_then(lambda _: res, func(res.value)) if is_ok(res) else res
