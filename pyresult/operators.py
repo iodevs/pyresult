@@ -85,6 +85,7 @@ def resolve(res):
     return res if is_error(res) else result(res.value)
 
 
+@curry
 def do(func, res):  # pylint: disable=invalid-name
     '''Run `func` when result `res` is ok
     and then return `res` if function return ok result,
