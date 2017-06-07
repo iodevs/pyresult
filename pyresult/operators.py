@@ -60,15 +60,15 @@ def fold(res):
     fold: (List Result a x) -> Result (List a) (List x)
     '''
     len_res = len(res)
-    val = [None]*len_res
-    err = [None]*len_res
+    val = [None] * len_res
+    err = [None] * len_res
 
-    for i, e in enumerate(res):
-        e = result(e)
-        if is_ok(e):
-            val[i] = e.value
+    for i, item in enumerate(res):
+        result_item = result(item)
+        if is_ok(result_item):
+            val[i] = result_item.value
         else:
-            err[i] = e.value
+            err[i] = result_item.value
 
     if None in val:
         return error(err)
