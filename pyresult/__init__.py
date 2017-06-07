@@ -16,6 +16,7 @@ from pyresult.operators import (  # noqa
     and_then,
     and_else,
     resolve,
+    do,
 )
 
 __author__ = """Jindrich Kralevic Smitka"""
