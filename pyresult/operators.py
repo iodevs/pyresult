@@ -96,3 +96,14 @@ def do(func, res):  # pylint: disable=invalid-name
     res = result(res)
 
     return and_then(lambda _: res, func(res.value)) if is_ok(res) else res
+
+
+@curry
+def with_default(default_value, res):
+    '''Return `default_value` when result is error
+    otherwise result value.
+
+    with_default :: a -> Result a x -> a
+    '''
+    res = result(res)
+    return res.value if is_ok(res) else default_value
