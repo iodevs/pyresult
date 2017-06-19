@@ -10,7 +10,8 @@ from pyresult.operators import (
     and_else,
     fold,
     resolve,
-    do
+    do,
+    with_default
 )
 
 
@@ -132,3 +133,15 @@ def test_do_return_error_from_function():
     err = error('BAZ FOO')
 
     assert do(lambda _: err, ok('FOO BAR')) == err
+
+
+def test_with_default_return_original_value():
+    res = ok('FOO BAR')
+
+    assert with_default('BAZ', res) == 'FOO BAR'
+
+
+def test_with_default_return_default_value_when_result_is_error():
+    res = error('FOO BAR')
+
+    assert with_default('BAZ', res) == 'BAZ'
