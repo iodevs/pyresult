@@ -2,6 +2,8 @@
 '''Result pattern implementation'''
 
 import collections
+from toolz import curry
+
 
 OK = 'Ok'
 ERROR = 'Error'
@@ -52,3 +54,13 @@ def value(res):
     if is_error(res):
         raise ResultError(res.value)
     return res.value
+
+
+@curry
+def get(error_fn, ok_fn, res):
+    '''Releasing the value. Apply `ok_fn` to result value and returns result
+    or apply `error_fn` to error and returns result.
+
+    get :: (e -> val) -> (a -> val) -> Result e a -> val
+    '''
+    return ok_fn(res.value) if is_ok(res) else error_fn(res.value)

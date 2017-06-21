@@ -11,6 +11,8 @@ Tests for `pyresult` module.
 
 import pytest
 
+from toolz import identity
+
 from pyresult.result import OK, ERROR, ResultError
 from pyresult import (
     ok,
@@ -18,7 +20,8 @@ from pyresult import (
     result,
     is_ok,
     is_error,
-    value
+    value,
+    get
 )
 
 
@@ -101,3 +104,15 @@ def test_value_return_ok_val():
 def test_value_return_error_val():
     with pytest.raises(ResultError):
         value((ERROR, 'msg'))
+
+
+def test_get_return_ok_value():
+    res = ok('OK')
+
+    assert get(identity, identity, res) == 'OK'
+
+
+def test_get_return_ok_value():
+    res = error('ERROR')
+
+    assert get(identity, identity, res) == 'ERROR'

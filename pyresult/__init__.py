@@ -7,7 +7,8 @@ from pyresult.result import (  # noqa
     result,
     is_ok,
     is_error,
-    value
+    value,
+    get
 )
 from pyresult.operators import (  # noqa
     errmap,
