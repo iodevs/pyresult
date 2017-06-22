@@ -8,7 +8,8 @@ from pyresult.result import (  # noqa
     is_ok,
     is_error,
     value,
-    get
+    get,
+    from_try_except
 )
 from pyresult.operators import (  # noqa
     errmap,

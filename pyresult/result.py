@@ -26,6 +26,17 @@ def error(msg):
     return Result(ERROR, msg)
 
 
+def from_try_except(fun, *args, **kwargs):
+    '''Create result from exception.
+
+    from_try_except :: (*args -> **kw -> val) -> List a -> Dict b -> Result e val
+    '''
+    try:
+        return ok(fun(*args, **kwargs))
+    except Exception as err:
+        return error(err)
+
+
 def result(res):
     '''Check value is result'''
     if not isinstance(res, tuple) or len(res) != 2:

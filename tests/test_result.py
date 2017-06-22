@@ -21,7 +21,8 @@ from pyresult import (
     is_ok,
     is_error,
     value,
-    get
+    get,
+    from_try_except
 )
 
 
@@ -92,6 +93,23 @@ def test_is_error_false():
     rv = (OK, 'msg')
 
     assert is_error(rv) is False
+
+
+def test_create_result_from_value():
+    res = from_try_except(lambda x: x, 1111)
+
+    assert is_ok(res)
+    assert res.value == 1111
+
+
+def test_create_result_from_excpetion():
+    def throw():
+        raise Exception('ERROR')
+
+    res = from_try_except(throw)
+
+    assert is_error(res)
+    assert str(res.value) == 'ERROR'
 
 
 def test_value_return_ok_val():
