@@ -130,7 +130,7 @@ def test_get_return_ok_value():
     assert get(identity, identity, res) == 'OK'
 
 
-def test_get_return_ok_value():
+def test_get_return_error_value():
     res = error('ERROR')
 
     assert get(identity, identity, res) == 'ERROR'
