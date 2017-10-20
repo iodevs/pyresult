@@ -8,7 +8,39 @@ from toolz import curry
 OK = 'Ok'
 ERROR = 'Error'
 
-Result = collections.namedtuple('Result', ('status', 'value'))
+class Result(collections.namedtuple('Result', ('status', 'value'))):
+    __slots__ = ()
+
+    def __and__(self, other):
+        '''Calculate the AND of two results.
+
+        :param other: Result e a
+        :returns: Result e a
+
+        >>> from pyresult import ok, error
+
+        >>> ok(1) & ok(2)
+        Result(status='Ok', value=[1, 2])
+
+
+        >>> ok(1) & error(2)
+        Result(status='Error', value=[2])
+
+        >>> error(1) & ok(2)
+        Result(status='Error', value=[1])
+
+        >>> error(1) & error(2)
+        Result(status='Error', value=[1, 2])
+
+        '''
+        if is_ok(self) and is_ok(other):
+            return ok([self.value, other.value])
+        elif is_ok(self) and is_error(other):
+            return error([other.value])
+        elif is_error(self) and is_ok(other):
+            return error([self.value])
+        elif is_error(self) and is_error(other):
+            return error([self.value, other.value])
 
 
 class ResultError(Exception):
