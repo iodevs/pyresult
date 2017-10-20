@@ -33,13 +33,48 @@ class Result(collections.namedtuple('Result', ('status', 'value'))):
         Result(status='Error', value=[1, 2])
 
         '''
-        if is_ok(self) and is_ok(other):
+        cond = (is_ok(self), is_ok(other))
+
+        if cond == (True, True):
             return ok([self.value, other.value])
-        elif is_ok(self) and is_error(other):
+        elif cond == (True, False):
             return error([other.value])
-        elif is_error(self) and is_ok(other):
+        elif cond == (False, True):
             return error([self.value])
-        elif is_error(self) and is_error(other):
+        elif cond == (False, False):
+            return error([self.value, other.value])
+
+    def __or__(self, other):
+        '''Calculate the OR of two results.
+
+        :param other: Result e a
+        :returns: Result e a
+
+        >>> from pyresult import ok, error
+
+        >>> ok(1) | ok(2)
+        Result(status='Ok', value=[1, 2])
+
+
+        >>> ok(1) | error(2)
+        Result(status='Ok', value=[1])
+
+        >>> error(1) | ok(2)
+        Result(status='Ok', value=[2])
+
+        >>> error(1) | error(2)
+        Result(status='Error', value=[1, 2])
+
+        '''
+        cond = (is_ok(self), is_ok(other))
+
+        if cond == (True, True):
+            return ok([self.value, other.value])
+        elif cond == (True, False):
+            return ok([self.value])
+        elif cond == (False, True):
+            return ok([other.value])
+        elif cond == (False, False):
             return error([self.value, other.value])
 
 
