@@ -61,6 +61,13 @@ def test_and_then_is_ok():
     assert and_then(f, ok(val)) == (OK, val + 1)
 
 
+def test_and_then_catches_exception():
+    def raise_exception(val):
+        raise Exception("test")
+
+    assert and_then(raise_exception, ok(1)) == error("test")
+
+
 def test_and_then_original_res():
     val = (ERROR, 'msg')
 
