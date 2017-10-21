@@ -30,6 +30,8 @@ Features
 
 * TODO
 
+Add more kickass ASCI art
+
 Credits
 ---------
 
