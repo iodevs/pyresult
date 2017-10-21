@@ -12,8 +12,10 @@ Contributors
 ------------
 
 * Mital Ashok (`@MitalAshok`_)
+* Yoav Tzelnick (`@yoavtzelnick`_)
 
 
 .. _`@s-m-i-t-a`: https://github.com/s-m-i-t-a
 .. _`@ondrej-tucek`: https://github.com/ondrej-tucek
 .. _`@MitalAshok`: https://github.com/MitalAshok
+.. _`@yoavtzelnick`: https://github.com/yoavtzelnick
