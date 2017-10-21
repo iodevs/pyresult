@@ -42,7 +42,7 @@ def and_then(func, res):
         res = result(res)
         return result(func(res.value)) if is_ok(res) else res
     except Exception as e:
-        return error(e.message)
+        return error(str(e))
 
 
 @curry
