@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 '''Result pattern implementation'''
 
-import collections
+from collections import namedtuple
 from toolz import curry
 
 
 OK = 'Ok'
 ERROR = 'Error'
 
-class Result(collections.namedtuple('Result', ('status', 'value'))):
+
+class Result(namedtuple('Result', ('status', 'value'))):
+    '''Result'''
     __slots__ = ()
 
     def __and__(self, other):
@@ -21,7 +23,6 @@ class Result(collections.namedtuple('Result', ('status', 'value'))):
 
         >>> ok(1) & ok(2)
         Result(status='Ok', value=[1, 2])
-
 
         >>> ok(1) & error(2)
         Result(status='Error', value=[2])
@@ -41,7 +42,7 @@ class Result(collections.namedtuple('Result', ('status', 'value'))):
             return error([other.value])
         elif cond == (False, True):
             return error([self.value])
-        elif cond == (False, False):
+        elif cond == (False, False):  # pragma: no branch
             return error([self.value, other.value])
 
     def __or__(self, other):
@@ -55,7 +56,6 @@ class Result(collections.namedtuple('Result', ('status', 'value'))):
         >>> ok(1) | ok(2)
         Result(status='Ok', value=[1, 2])
 
-
         >>> ok(1) | error(2)
         Result(status='Ok', value=[1])
 
@@ -64,7 +64,6 @@ class Result(collections.namedtuple('Result', ('status', 'value'))):
 
         >>> error(1) | error(2)
         Result(status='Error', value=[1, 2])
-
         '''
         cond = (is_ok(self), is_ok(other))
 
@@ -74,7 +73,7 @@ class Result(collections.namedtuple('Result', ('status', 'value'))):
             return ok([self.value])
         elif cond == (False, True):
             return ok([other.value])
-        elif cond == (False, False):
+        elif cond == (False, False):  # pragma: no branch
             return error([self.value, other.value])
 
 
