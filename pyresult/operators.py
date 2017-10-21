@@ -38,8 +38,11 @@ def and_then(func, res):
 
     and_then: (a -> Result b x) -> Result a x -> Result b x
     '''
-    res = result(res)
-    return result(func(res.value)) if is_ok(res) else res
+    try:
+        res = result(res)
+        return result(func(res.value)) if is_ok(res) else res
+    except Exception as e:
+        return error(e.message)
 
 
 @curry
