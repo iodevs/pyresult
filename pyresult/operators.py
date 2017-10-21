@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 '''Result operators'''
 
-from toolz import curry
+from six.moves import reduce
+from toolz import curry, pipe, concatv
 
 from pyresult.result import (
     ok,
@@ -107,3 +108,95 @@ def with_default(default_value, res):
     '''
     res = result(res)
     return res.value if is_ok(res) else default_value
+
+
+def product(results):
+    '''Calculate product of Results
+
+    product :: List (Result e a) -> Result (List e) (List a)
+
+    :param results: Result list
+    :returns: Result containing list of error or values
+
+    >>> from pyresult.result import ok, error
+    >>> from pyresult.operators import product
+
+    >>> data = [ok(1), ok(2), ok(3)]
+    >>> product(data)
+    Result(status='Ok', value=[1, 2, 3])
+
+    >>> data = [ok(1), ok(2), ok(3), ok(4)]
+    >>> product(data)
+    Result(status='Ok', value=[1, 2, 3, 4])
+
+    >>> data = [error(1), ok(2), error(3)]
+    >>> product(data)
+    Result(status='Error', value=[1, 3])
+
+    >>> data = [error(1)]
+    >>> product(data)
+    Result(status='Error', value=[1])
+
+    >>> data = []
+    >>> product(data)
+    Result(status='Ok', value=[])
+    '''
+    return reduce(
+        lambda r1, r2: pipe(
+            r1 & r2,
+            rmap(_flatten),  # pylint: disable=no-value-for-parameter
+            errmap(_flatten),  # pylint: disable=no-value-for-parameter
+        ),
+        results,
+        ok([])
+    )
+
+
+def sum(results):
+    '''Calculate sum of Results
+
+    sum :: List (Result e a) -> Result (List e) (List a)
+
+    :param results: Result list
+    :returns: Result containing list of error or values
+
+    >>> from pyresult.result import ok, error
+    >>> from pyresult.operators import sum
+
+    >>> data = [ok(1), ok(2), ok(3)]
+    >>> sum(data)
+    Result(status='Ok', value=[1, 2, 3])
+
+    >>> data = [ok(1), ok(2), ok(3), ok(4)]
+    >>> sum(data)
+    Result(status='Ok', value=[1, 2, 3, 4])
+
+    >>> data = [error(1), ok(2), error(3), ok(4)]
+    >>> sum(data)
+    Result(status='Ok', value=[2, 4])
+
+    >>> data = [error(1)]
+    >>> sum(data)
+    Result(status='Error', value=[1])
+
+    >>> data = []
+    >>> sum(data)
+    Result(status='Error', value=[])
+    '''
+    return reduce(
+        lambda r1, r2: pipe(
+            r1 | r2,
+            rmap(_flatten),  # pylint: disable=no-value-for-parameter
+            errmap(_flatten),  # pylint: disable=no-value-for-parameter
+        ),
+        results,
+        error([])
+    )
+
+
+def _flatten(vals):
+    head, tail = vals[0], vals[1:]
+    try:
+        return list(concatv(head, tail))
+    except TypeError:
+        return vals
