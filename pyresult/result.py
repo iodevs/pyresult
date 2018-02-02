@@ -99,8 +99,32 @@ def from_try_except(fun, *args, **kwargs):
     '''
     try:
         return ok(fun(*args, **kwargs))
-    except Exception as err:
+    except Exception as err:  # pylint: disable=broad-except
         return error(err)
+
+
+@curry
+def from_maybe(msg, val):
+    '''Create result from `any` value or `None`
+
+    :param msg: returned message in error, if val is `None`
+    :param val: any value
+    :returns: :class:`Result`
+
+
+    >>> from pyresult import from_maybe, is_ok, is_error
+
+    returns ok result with supplied value
+
+    >>> from_maybe('ERROR', 1234)
+    Result(status='Ok', value=1234)
+
+    returns error with supplied message
+
+    >>> from_maybe('ERROR', None)
+    Result(status='Error', value='ERROR')
+    '''
+    return ok(val) if val is not None else error(msg)
 
 
 def result(res):
