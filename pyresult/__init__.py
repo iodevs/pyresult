@@ -25,4 +25,4 @@ from pyresult.operators import (  # noqa
 
 __author__ = """Jindrich Kralevic Smitka"""
 __email__ = 'smitka.j@gmail.com'
-__version__ = '1.0.1'
+__version__ = '1.1.0'
