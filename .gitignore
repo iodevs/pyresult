@@ -82,6 +82,7 @@ tmp/
 .cache
 
 .vimrc
+.projections.json
 
 # mypy
 .mypy_cache
