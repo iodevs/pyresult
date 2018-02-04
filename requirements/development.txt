@@ -17,4 +17,4 @@ coveralls==1.2.0
 mock==2.0.0
 
 # docs
-Sphinx==1.6.6
+Sphinx==1.6.7
