@@ -13,7 +13,7 @@ mccabe==0.6.1
 pytest==3.4.0
 pytest-cov==2.5.1
 tox==3.2.1
-coveralls==1.2.0
+coveralls==4.0.0
 mock==2.0.0
 
 # docs
